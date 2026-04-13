@@ -40,15 +40,17 @@ options.secretOrKey = process.env.SECRET_KEY;
 
 passport.use(
   new JWTStrategy(options, async (jwt_payload, done) => {
-    // prisma query checking user exists in db
-    const user = prisma.user.findUnique({
-      where: {
-        id: jwt_payload.id,
-      },
-    });
-    if (err) return done(err, false);
-    if (!user) return done(null, false);
-
-    return done(null, user);
+    try {
+      // prisma query checking user exists in db
+      const user = await prisma.user.findUnique({
+        where: {
+          id: jwt_payload.id,
+        },
+      });
+      if (!user) return done(null, false);
+      return done(null, user);
+    } catch (err) {
+      return done(err, false);
+    }
   }),
 );

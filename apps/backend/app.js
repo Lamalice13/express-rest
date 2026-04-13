@@ -3,6 +3,7 @@ import "dotenv/config";
 import "./config/passport.js";
 import cors from "cors";
 import { authRouter } from "./routes/authRouter.js";
+import { blogRouter } from "./routes/blogRouter.js";
 
 // APP
 const app = express();
@@ -21,11 +22,11 @@ app.use(cors(corsOptions));
 
 // ROUTES
 app.use("/auth", authRouter);
-// app.use("/blog");
+app.use("/post", blogRouter);
 
 app.listen(process.env.PORT || 3000, (err) => {
   if (err) return console.error(err);
   console.log(`Server running on 3000`);
 });
 
-// POST/PATCH/GET blog + POST comments,
+// PATCH/GET blog + POST comments,

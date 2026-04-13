@@ -25,6 +25,7 @@ model User {
 model Post {
     id        Int       @id @default(autoincrement())
     title     String    @db.VarChar(50)
+    text      String
     timestamp DateTime  @default(dbgenerated("NOW()"))
     user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
     userId    Int       @unique
