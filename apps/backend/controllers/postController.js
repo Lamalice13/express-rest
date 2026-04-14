@@ -97,9 +97,17 @@ async function getAllPosts(req, res) {
       select: {
         title: true,
         timestamp: true,
+        id: true,
+        text: true,
         user: {
           select: {
             username: true,
+          },
+        },
+        comments: {
+          select: {
+            text: true,
+            timestamp: true,
           },
         },
       },
