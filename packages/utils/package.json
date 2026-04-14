@@ -1,0 +1,11 @@
+{
+  "name": "@monorepo/utils",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/utils.js",
+  "scripts": {},
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module"
+}
