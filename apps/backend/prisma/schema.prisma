@@ -37,6 +37,7 @@ model Post {
 model Comment {
     id        Int      @id @default(autoincrement())
     timestamp DateTime @default(dbgenerated("NOW()"))
+    text      String   @db.VarChar(200)
     post      Post?    @relation(fields: [postId], references: [id])
     postId    Int?
 }

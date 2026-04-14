@@ -6,6 +6,7 @@ import {
   getPost,
   getAllPosts,
 } from "../controllers/postController.js";
+import { postComment } from "../controllers/commentController.js";
 import { requireAuth } from "../middlewares/authJWT.js";
 
 const postRouter = Router();
@@ -16,5 +17,7 @@ postRouter
   .patch(requireAuth, patchPost)
   .delete(requireAuth, deletePost)
   .get(getPost);
+
+postRouter.route("/:id/comments").post(postComment);
 
 export { postRouter };
