@@ -22,7 +22,7 @@ app.use(cors(corsOptions));
 
 // ROUTES
 app.use("/auth", authRouter);
-app.use("/post", postRouter);
+app.use("/posts", postRouter);
 
 app.listen(process.env.PORT || 3000, (err) => {
   if (err) return console.error(err);

@@ -71,4 +71,43 @@ async function deletePost(req, res) {
   }
 }
 
-export { postPost, patchPost, deletePost };
+async function getPost(req, res) {
+  try {
+    const post = await prisma.post.findUnique({
+      where: {
+        id: Number(req.params.id),
+      },
+      include: {
+        comments: true,
+      },
+    });
+    res.json({ post });
+  } catch (err) {
+    console.log(err);
+    res.sendStatus(err);
+  }
+}
+
+async function getAllPosts(req, res) {
+  try {
+    const posts = await prisma.post.findMany({
+      where: {
+        published: true,
+      },
+      select: {
+        title: true,
+        timestamp: true,
+        user: {
+          select: {
+            username: true,
+          },
+        },
+      },
+    });
+    return res.json({ posts });
+  } catch (err) {
+    return res.sendStatus(503);
+  }
+}
+
+export { postPost, patchPost, deletePost, getPost, getAllPosts };
