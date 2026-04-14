@@ -35,6 +35,7 @@ async function patchPost(req, res) {
     const post = await prisma.post.update({
       where: {
         id: Number(id),
+        authorId: req.user.id,
       },
       data: {
         title: title !== undefined ? title : Prisma.skip,
@@ -56,4 +57,18 @@ async function patchPost(req, res) {
   }
 }
 
-export { postPost, patchPost };
+async function deletePost(req, res) {
+  try {
+    await prisma.post.delete({
+      where: {
+        id: Number(req.params.id),
+        userId: req.user.id,
+      },
+    });
+    return res.sendStatus(200);
+  } catch (err) {
+    return res.sendStatus(503);
+  }
+}
+
+export { postPost, patchPost, deletePost };
