@@ -8,8 +8,8 @@
   ],
   "scripts": {
     "start:admin": "npm run dev -w @monorepo/client-admin",
-    "start:user": "npm run dev -w @monorepo/client-app",
-    "start:api": "npm run dev -w @monorepo/backend",
+    "start:user": "npm run dev -w @monorepo/client-user",
+    "start:api": "npm run dev -w @monorepo/api",
     "dev": "concurrently \"npm run start:admin\" \"npm run start:user\" \"npm run start:api\" "
   },
   "repository": {
@@ -26,5 +26,9 @@
   "homepage": "https://github.com/Lamalice13/express-rest#readme",
   "devDependencies": {
     "concurrently": "^9.2.1"
+  },
+  "dependencies": {
+    "@tailwindcss/vite": "^4.2.2",
+    "tailwindcss": "^4.2.2"
   }
 }

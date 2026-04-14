@@ -1,5 +1,5 @@
 {
-  "name": "@monorepo/backend",
+  "name": "@monorepo/api",
   "version": "1.0.0",
   "description": "",
   "scripts": {

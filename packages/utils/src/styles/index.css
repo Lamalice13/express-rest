@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@source "../../../../apps/client-admin";
+@source "../../../../apps/client-user";
+
+:root {
+  --black: rgb(23, 23, 23);
+  --yellow: rgb(177, 177, 15);
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background-color: var(--black);
+}
