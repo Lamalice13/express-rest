@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getAllPosts } from "../api/posts";
+import { getAllPosts } from "@monorepo/shared/posts";
 
 export function Dashboard() {
   const [posts, setPosts] = useState(null);

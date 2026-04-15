@@ -12,8 +12,4 @@ function createPost(data) {
   return apiFetch(`posts`, data);
 }
 
-function getAllPosts(data) {
-  return apiFetch(`posts`, data);
-}
-
-export { patchPost, deletePost, createPost, getAllPosts };
+export { patchPost, deletePost, createPost };

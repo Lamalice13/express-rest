@@ -1,8 +1,11 @@
 {
-  "name": "@monorepo/utils",
+  "name": "@monorepo/shared",
   "version": "1.0.0",
   "description": "",
-  "main": "src/utils.js",
+  "exports": {
+    "./posts": "./src/api/posts.js",
+    "./globals": "./src/styles/globals.js"
+  },
   "scripts": {},
   "keywords": [],
   "author": "",
