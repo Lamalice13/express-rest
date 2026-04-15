@@ -3,8 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "exports": {
-    "./posts": "./src/api/posts.js",
-    "./globals": "./src/styles/globals.js"
+    "./posts": {
+      "import": "./src/api/posts.js"
+    },
+    "./client": {
+      "import": "./src/api/client.js"
+    },
+    "./globals": {
+      "import": "./src/styles/globals.js"
+    }
   },
   "scripts": {},
   "keywords": [],
