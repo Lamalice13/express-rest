@@ -5,7 +5,7 @@ import { prisma } from "../lib/prisma.js";
 export async function register(req, res) {
   try {
     const { email, username, password } = req.body;
-    console.log(email, username, password);
+
     const user = await prisma.user.create({
       data: {
         email,

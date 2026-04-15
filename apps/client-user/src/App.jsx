@@ -19,6 +19,8 @@ function App() {
     fetchData();
   }, []);
 
+  console.log(posts);
+
   return (
     <>
       <main>

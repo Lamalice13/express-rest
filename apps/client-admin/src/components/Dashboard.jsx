@@ -1,24 +1,17 @@
 import { useEffect, useState } from "react";
+import { getAllPosts } from "../api/posts";
 
 export function Dashboard() {
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      try {
-        const res = await fetch("http://localhost:3000/posts");
-        if (!res.ok) {
-          throw new Error(`Error: ${res.status}`);
-        }
-        const data = await res.json();
-        setPosts(data.posts);
-      } catch (err) {
-        console.error(err);
-      }
+      const data = await getAllPosts({ method: "GET" });
+      setPosts(data.posts);
     }
     fetchData();
   }, []);
-  console.log(posts);
+
   return (
     <main>
       <h1>Dashboard</h1>
@@ -27,9 +20,11 @@ export function Dashboard() {
           posts.map((post) => (
             <div key={post.id}>
               <h1>{post.title}</h1>
+              <p>{post.published ? "Published" : "Unpublished"}</p>
               <p>{post.text}</p>
               <p>{post.user.username}</p>
               <p>{post.timestamp}</p>
+              <button type='button'>Delete</button>
             </div>
           ))}
       </div>

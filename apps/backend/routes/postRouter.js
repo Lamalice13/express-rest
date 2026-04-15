@@ -12,6 +12,7 @@ import { requireAuth } from "../middlewares/authJWT.js";
 const postRouter = Router();
 
 postRouter.route("/").post(requireAuth, postPost).get(getAllPosts);
+
 postRouter
   .route("/:id")
   .patch(requireAuth, patchPost)

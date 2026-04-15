@@ -1,4 +1,5 @@
 import { prisma, Prisma } from "../lib/prisma.js";
+import jwt from "jsonwebtoken";
 
 async function postPost(req, res) {
   try {
@@ -91,17 +92,27 @@ async function getPost(req, res) {
 
 async function getAllPosts(req, res) {
   const { include } = req.query;
+  const token = req.headers.authorization?.split(" ")[1];
+  let isUserAuth = false;
+
+  if (token) {
+    isUserAuth = jwt.verify(token, process.env.SECRET_KEY);
+  }
+  console.log(isUserAuth);
 
   try {
     const posts = await prisma.post.findMany({
-      where: {
-        published: true,
-      },
+      ...(!isUserAuth && {
+        where: {
+          published: true,
+        },
+      }),
       select: {
         title: true,
         timestamp: true,
         id: true,
         text: true,
+        published: true,
         user: {
           select: {
             username: true,
@@ -118,6 +129,7 @@ async function getAllPosts(req, res) {
         }),
       },
     });
+
     return res.json({ posts });
   } catch (err) {
     return res.sendStatus(503);
