@@ -108,6 +108,7 @@ async function getAllPosts(req, res) {
           select: {
             text: true,
             timestamp: true,
+            id: true,
           },
         },
       },

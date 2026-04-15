@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 
 function App() {
   const [posts, setPosts] = useState(null);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -25,7 +26,7 @@ function App() {
         <div>
           {posts &&
             posts.map((post) => (
-              <section>
+              <section key={post.id + "-"}>
                 <div key={post.id}>
                   <h1>{post.title}</h1>
                   <p>{post.text}</p>
@@ -34,7 +35,7 @@ function App() {
                 </div>
 
                 {post.comments.map((comment) => (
-                  <div>
+                  <div key={comment.id}>
                     <p>{comment.text}</p>
                     <p>{comment.timestamp}</p>
                   </div>

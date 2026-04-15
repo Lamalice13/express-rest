@@ -1,9 +1,11 @@
 import bcrypt from "bcryptjs";
+import { signToken } from "../lib/jwt.js";
 import { prisma } from "../lib/prisma.js";
 
 export async function register(req, res) {
   try {
     const { email, username, password } = req.body;
+    console.log(email, username, password);
     const user = await prisma.user.create({
       data: {
         email,
@@ -17,12 +19,11 @@ export async function register(req, res) {
         password: true,
       },
     });
-    req.logIn(user, { session: false }, (e) => {
-      if (e) return res.sendStatus(503);
-      const token = signToken(user.id);
-      return res.json({ token });
-    });
+
+    const token = signToken(user.id);
+    return res.json({ token });
   } catch (err) {
+    console.log(err);
     return res.sendStatus(503);
   }
 }
