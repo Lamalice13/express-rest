@@ -10,6 +10,7 @@ authRouter.post("/login", (req, res, next) => {
     if (!user) return res.status(401).json({ message: info?.message });
 
     const token = signToken(user.id);
+
     return res.json({ token });
   })(req, res, next);
 });

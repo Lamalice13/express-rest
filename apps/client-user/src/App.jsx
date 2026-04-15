@@ -6,7 +6,7 @@ function App() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("http://localhost:3000/posts");
+        const res = await fetch("http://localhost:3000/posts?include=comment");
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
         }

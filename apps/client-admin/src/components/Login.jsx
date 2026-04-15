@@ -21,10 +21,6 @@ export function Login() {
       navigate("/login");
     }
   }
-  const token = localStorage.getItem("token");
-  if (token) {
-    navigate("/dahboard");
-  }
 
   return (
     <main>

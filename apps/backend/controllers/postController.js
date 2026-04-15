@@ -4,6 +4,7 @@ async function postPost(req, res) {
   try {
     const { title, text } = req.body;
     const { id } = req.user;
+
     const blog = await prisma.post.create({
       data: {
         userId: id,
@@ -89,6 +90,8 @@ async function getPost(req, res) {
 }
 
 async function getAllPosts(req, res) {
+  const { include } = req.query;
+
   try {
     const posts = await prisma.post.findMany({
       where: {
@@ -104,13 +107,15 @@ async function getAllPosts(req, res) {
             username: true,
           },
         },
-        comments: {
-          select: {
-            text: true,
-            timestamp: true,
-            id: true,
+        ...(include && {
+          comments: {
+            select: {
+              text: true,
+              timestamp: true,
+              id: true,
+            },
           },
-        },
+        }),
       },
     });
     return res.json({ posts });
