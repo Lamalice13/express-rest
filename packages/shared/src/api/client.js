@@ -1,4 +1,4 @@
-async function apiFetch(URI, options = {}) {
+async function apiFetch(URI, options) {
   const headers = {};
   const token = localStorage.getItem("token");
   if (token) {
@@ -17,8 +17,7 @@ async function apiFetch(URI, options = {}) {
   if (!res.ok) {
     throw new Error(res.status);
   }
-
-  return res.json();
+  if (options.method !== "DELETE") return res.json();
 }
 
 export { apiFetch };

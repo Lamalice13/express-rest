@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@monorepo/shared/posts";
-import { patchPost } from "../api/posts";
+import { patchPost, deletePost } from "../api/posts";
 
 export function Dashboard() {
   const [posts, setPosts] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getAllPosts({ method: "GET" });
+      const data = await getAllPosts();
       setPosts(data.posts);
     }
     fetchData();
   }, []);
 
   async function handlePublish(id) {
-    const data = await patchPost(id, { method: "PATCH" });
+    const data = await patchPost(id);
     const isPublished = data.published;
     setPosts(
       posts.map((post) => {
@@ -25,6 +25,12 @@ export function Dashboard() {
       }),
     );
   }
+
+  async function handleDelete(id) {
+    await deletePost(id);
+    setPosts(posts.filter((post) => post.id !== id));
+  }
+
   console.log(posts);
 
   return (
@@ -40,7 +46,11 @@ export function Dashboard() {
               <p>{post.user.username}</p>
               <p>{post.timestamp}</p>
               <button type='button' onClick={() => handlePublish(post.id)}>
-                Publish it
+                {post.published ? "Unpublished it" : "Published it"}
+              </button>
+              <br />
+              <button type='button' onClick={() => handleDelete(post.id)}>
+                Delete
               </button>
             </div>
           ))}

@@ -1,7 +1,7 @@
 import { apiFetch } from "./client";
 
-function getAllPosts(data) {
-  return apiFetch("posts", data);
+function getAllPosts() {
+  return apiFetch("posts", { method: "GET" });
 }
 
 export { getAllPosts };

@@ -59,7 +59,6 @@ async function deletePost(req, res) {
     await prisma.post.delete({
       where: {
         id: Number(req.params.id),
-        userId: req.user.id,
       },
     });
     return res.sendStatus(200);
