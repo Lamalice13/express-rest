@@ -1,4 +1,4 @@
-export async function apiFetch(URI, options) {
+async function apiFetch(URI, options = {}) {
   const headers = {};
   const token = localStorage.getItem("token");
   if (token) {
@@ -20,3 +20,5 @@ export async function apiFetch(URI, options) {
 
   return res.json();
 }
+
+export { apiFetch };

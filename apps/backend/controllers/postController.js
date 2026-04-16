@@ -25,27 +25,22 @@ async function postPost(req, res) {
 
 async function patchPost(req, res) {
   try {
-    const { title, text } = req.body;
     const { id } = req.params;
 
-    if (!title && !text) {
-      return res
-        .status(400)
-        .json({ error: "Au moins un champ est requis (title ou text)" });
-    }
+    const currentPost = await prisma.post.findUnique({
+      where: { id: Number(id) },
+      select: { published: true },
+    });
 
     const post = await prisma.post.update({
       where: {
         id: Number(id),
-        authorId: req.user.id,
       },
       data: {
-        title: title !== undefined ? title : Prisma.skip,
-        text: text !== undefined ? text : Prisma.skip,
+        published: !currentPost.published,
       },
       select: {
-        title: title !== undefined ? true : false,
-        text: text !== undefined ? true : false,
+        published: true,
       },
     });
     return res.json(post);

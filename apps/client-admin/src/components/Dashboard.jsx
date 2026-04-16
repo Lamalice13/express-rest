@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@monorepo/shared/posts";
+import { patchPost } from "../api/posts";
 
 export function Dashboard() {
   const [posts, setPosts] = useState(null);
@@ -11,6 +12,20 @@ export function Dashboard() {
     }
     fetchData();
   }, []);
+
+  async function handlePublish(id) {
+    const data = await patchPost(id, { method: "PATCH" });
+    const isPublished = data.published;
+    setPosts(
+      posts.map((post) => {
+        if (post.id === id) {
+          return { ...post, published: isPublished };
+        }
+        return post;
+      }),
+    );
+  }
+  console.log(posts);
 
   return (
     <main>
@@ -24,7 +39,9 @@ export function Dashboard() {
               <p>{post.text}</p>
               <p>{post.user.username}</p>
               <p>{post.timestamp}</p>
-              <button type='button'>Delete</button>
+              <button type='button' onClick={() => handlePublish(post.id)}>
+                Publish it
+              </button>
             </div>
           ))}
       </div>

@@ -1,4 +1,4 @@
-import { apiFetch } from "./client";
+import { apiFetch } from "@monorepo/shared/client";
 
 function patchPost(params, data) {
   return apiFetch(`posts/${params}`, data);

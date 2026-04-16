@@ -4,13 +4,13 @@
   "description": "",
   "exports": {
     "./posts": {
-      "import": "./src/api/posts.js"
+      "default": "./src/api/posts.js"
     },
     "./client": {
-      "import": "./src/api/client.js"
+      "default": "./src/api/client.js"
     },
     "./globals": {
-      "import": "./src/styles/globals.js"
+      "default": "./src/styles/globals.js"
     }
   },
   "scripts": {},
