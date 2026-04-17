@@ -1,4 +1,4 @@
-async function apiFetch(endpoint, options) {
+async function apiFetch(endpoint, options, contentType = "") {
   const headers = {};
   const token = localStorage.getItem("token");
   if (token) {
@@ -8,8 +8,8 @@ async function apiFetch(endpoint, options) {
     ...options, // method and body
     headers: {
       ...headers,
-      ...(options?.headers
-        ? options.headers
+      ...(options?.contentType
+        ? options.contentType
         : { "Content-Type": "application/json" }),
     },
   });
@@ -17,7 +17,7 @@ async function apiFetch(endpoint, options) {
   if (!res.ok) {
     throw new Error(res.status);
   }
-  if (options.method !== "DELETE") return res.json();
+  if (options.method !== "DELETE") return res;
 }
 
 export { apiFetch };

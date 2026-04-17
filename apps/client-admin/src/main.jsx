@@ -6,6 +6,7 @@ import { Login } from "./components/Login";
 import { Register } from "./components/Register";
 import { Dashboard } from "./components/Dashboard.jsx";
 import "@monorepo/shared/globals";
+import { Form } from "./components/Form.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById("root")).render(
         <Route path='/dashboard'>
           <Route index element={<Dashboard />} />
         </Route>
+        <Route path='/form' element={<Form />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

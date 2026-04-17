@@ -7,14 +7,18 @@ export function Dashboard() {
 
   useEffect(() => {
     async function fetchData() {
-      const data = await getAllPosts();
+      const res = await getAllPosts();
+      const data = await res.json();
+
       setPosts(data.posts);
     }
     fetchData();
   }, []);
 
+  console.log(posts);
   async function handlePublish(id) {
-    const data = await patchPost(id);
+    const res = await patchPost(id);
+    const data = await res.json();
     const isPublished = data.published;
     setPosts(
       posts.map((post) => {

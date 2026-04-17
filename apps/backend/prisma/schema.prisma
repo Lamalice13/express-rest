@@ -29,7 +29,7 @@ model Post {
     text      String
     timestamp DateTime  @default(dbgenerated("NOW()"))
     user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-    userId    Int       @unique
+    userId    Int
     published Boolean   @default(true)
     comments  Comment[]
 }
