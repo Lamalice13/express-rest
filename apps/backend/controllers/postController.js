@@ -6,25 +6,22 @@ async function postPost(req, res) {
     const { title, text } = req.body;
     const { id } = req.user;
 
-    const blog = await prisma.post.create({
+    await prisma.post.create({
       data: {
         userId: id,
         title,
         text,
       },
-      select: {
-        title: true,
-        text: true,
-      },
     });
-    res.json({ blog });
+    return res.sendStatus(200);
   } catch (err) {
-    res.status(503);
+    return res.sendStatus(503);
   }
 }
 
 async function patchPost(req, res) {
   try {
+    const { text } = req.query;
     const { id } = req.params;
 
     const currentPost = await prisma.post.findUnique({
@@ -37,15 +34,17 @@ async function patchPost(req, res) {
         id: Number(id),
       },
       data: {
-        published: !currentPost.published,
+        ...(text && { text }),
+        ...(!text && { published: !currentPost.published }),
       },
       select: {
-        published: true,
+        ...(!text && { published: true }),
+        ...(text && { text: true }),
       },
     });
+
     return res.json(post);
   } catch (err) {
-    console.log(err);
     if (err.code === "P2025") {
       // Prisma : record not found
       return res.status(404).json({ error: "Post introuvable" });
@@ -79,7 +78,6 @@ async function getPost(req, res) {
     });
     res.json({ post });
   } catch (err) {
-    console.log(err);
     res.sendStatus(err);
   }
 }
@@ -92,7 +90,6 @@ async function getAllPosts(req, res) {
   if (token) {
     isUserAuth = jwt.verify(token, process.env.SECRET_KEY);
   }
-  console.log(isUserAuth);
 
   try {
     const posts = await prisma.post.findMany({

@@ -18,7 +18,7 @@ export function Login() {
       localStorage.setItem("token", token);
       navigate("/dashboard");
     } else {
-      navigate("/login");
+      navigate("/");
     }
   }
 

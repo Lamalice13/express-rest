@@ -31,8 +31,6 @@ export function Dashboard() {
     setPosts(posts.filter((post) => post.id !== id));
   }
 
-  console.log(posts);
-
   return (
     <main>
       <h1>Dashboard</h1>

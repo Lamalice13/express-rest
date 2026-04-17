@@ -1,15 +1,15 @@
 import { apiFetch } from "@monorepo/shared/client";
 
-function patchPost(params, data) {
-  return apiFetch(`posts/${params}`, { method: "PATCH", ...data });
+function patchPost(endpoint, options = "") {
+  return apiFetch(`posts/${endpoint}`, { method: "PATCH", ...options });
 }
 
-function deletePost(params) {
-  apiFetch(`posts/${params}`, { method: "DELETE" });
+function deletePost(endpoint) {
+  apiFetch(`posts/${endpoint}`, { method: "DELETE" });
 }
 
-function createPost(data) {
-  return apiFetch(`posts`, { method: "POST", ...data });
+function createPost(options = "") {
+  return apiFetch(`posts`, { method: "POST", ...options });
 }
 
 export { patchPost, deletePost, createPost };
