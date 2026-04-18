@@ -8,7 +8,7 @@ export function Dashboard() {
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
-  const [buttonLoading, setButtonLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -27,7 +27,7 @@ export function Dashboard() {
   }, []);
 
   async function handlePublish(id) {
-    setButtonLoading(true);
+    setButtonLoading(id);
     try {
       const res = await patchPost(id);
       const data = await res.json();
@@ -44,7 +44,7 @@ export function Dashboard() {
     } catch (err) {
       console.error(err);
     } finally {
-      setTimeout(() => setButtonLoading(false), 1000);
+      setTimeout(() => setButtonLoading(null), 1000);
     }
   }
 
@@ -121,7 +121,7 @@ export function Dashboard() {
                 <p>{post.timestamp}</p>
 
                 <button type='button' onClick={() => handlePublish(post.id)}>
-                  {buttonLoading ? (
+                  {buttonLoading === post.id ? (
                     <TailSpin
                       height='80'
                       width='80'
