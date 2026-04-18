@@ -21,8 +21,8 @@ export function Dashboard() {
     const res = await patchPost(id);
     const data = await res.json();
     const isPublished = data.published;
-    setPosts(
-      posts.map((post) => {
+    setPosts((prev) =>
+      prev.map((post) => {
         if (post.id === id) {
           return { ...post, published: isPublished };
         }

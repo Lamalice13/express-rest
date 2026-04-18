@@ -2,6 +2,7 @@ import { prisma } from "../lib/prisma.js";
 
 async function postComment(req, res) {
   const { id: postId } = req.params;
+
   try {
     const comment = await prisma.comment.create({
       data: {

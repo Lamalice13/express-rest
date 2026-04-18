@@ -4,4 +4,8 @@ function getAllPosts() {
   return apiFetch("posts", { method: "GET" });
 }
 
-export { getAllPosts };
+function postComment(postId, options) {
+  return apiFetch(`posts/${postId}/comments`, { method: "POST", ...options });
+}
+
+export { getAllPosts, postComment };

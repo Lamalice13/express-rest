@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { postComment } from "@monorepo/shared/posts";
 
 function App() {
   const [posts, setPosts] = useState(null);
@@ -21,6 +22,26 @@ function App() {
 
   console.log(posts);
 
+  async function handleSubmitComment(postId, e) {
+    e.preventDefault();
+    const formData = Object.fromEntries(new FormData(e.target));
+    const res = await postComment(postId, { body: JSON.stringify(formData) });
+
+    if (res.ok) {
+      const data = await res.json();
+      setPosts((prev) =>
+        prev.map((post) => {
+          if (post.id === postId)
+            return {
+              ...post,
+              comments: [...post.comments, data.comment],
+            };
+          return post;
+        }),
+      );
+    }
+  }
+
   return (
     <>
       <main>
@@ -35,13 +56,22 @@ function App() {
                   <p>{post.user.username}</p>
                   <p>{post.timestamp}</p>
                 </div>
-
+                <br />
+                <h2 className='text-2xl'>Comments</h2>
                 {post.comments.map((comment) => (
                   <div key={comment.id}>
                     <p>{comment.text}</p>
                     <p>{comment.timestamp}</p>
                   </div>
                 ))}
+                <form
+                  action='POST'
+                  onSubmit={(e) => handleSubmitComment(post.id, e)}
+                >
+                  <label htmlFor='comment'>Let a comment here</label>
+                  <textarea name='text' id='comment'></textarea>
+                  <button type='submit'>Send</button>
+                </form>
               </section>
             ))}
         </div>
