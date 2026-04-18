@@ -1,34 +1,51 @@
 import { useEffect, useState } from "react";
 import { getAllPosts } from "@monorepo/shared/posts";
 import { patchPost, deletePost } from "../api/posts";
+import { TailSpin } from "react-loader-spinner";
 
 export function Dashboard() {
   const [posts, setPosts] = useState(null);
   const [editingId, setEditingId] = useState(null);
   const [draft, setDraft] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [buttonLoading, setButtonLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
-      const res = await getAllPosts();
-      const data = await res.json();
-
-      setPosts(data.posts);
+      setLoading(true);
+      try {
+        const res = await getAllPosts();
+        const data = await res.json();
+        setPosts(data.posts);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setTimeout(() => setLoading(false), 1000);
+      }
     }
     fetchData();
   }, []);
 
   async function handlePublish(id) {
-    const res = await patchPost(id);
-    const data = await res.json();
-    const isPublished = data.published;
-    setPosts((prev) =>
-      prev.map((post) => {
-        if (post.id === id) {
-          return { ...post, published: isPublished };
-        }
-        return post;
-      }),
-    );
+    setButtonLoading(true);
+    try {
+      const res = await patchPost(id);
+      const data = await res.json();
+
+      const isPublished = data.published;
+      setPosts((prev) =>
+        prev.map((post) => {
+          if (post.id === id) {
+            return { ...post, published: isPublished };
+          }
+          return post;
+        }),
+      );
+    } catch (err) {
+      console.error(err);
+    } finally {
+      setTimeout(() => setButtonLoading(false), 1000);
+    }
   }
 
   async function handlePatchText(post) {
@@ -74,36 +91,57 @@ export function Dashboard() {
   return (
     <main>
       <h1>Dashboard</h1>
-      <div>
-        {posts &&
-          posts.map((post) => (
-            <div key={post.id}>
-              <p>{post.published ? "Published" : "Unpublished"}</p>
-              <h1>{post.title}</h1>
-              {editingId !== post.id ? (
-                <p onClick={() => startEditing(post)}>{post.text}</p>
-              ) : (
-                <input
-                  type='text'
-                  value={draft}
-                  onBlur={() => handleSave(post)}
-                  onKeyDown={(e) => handleKeydown(e, post)}
-                  onChange={(e) => setDraft(e.target.value)}
-                  autoFocus
-                />
-              )}
-              <p>{post.user.username}</p>
-              <p>{post.timestamp}</p>
-              <button type='button' onClick={() => handlePublish(post.id)}>
-                {post.published ? "Unpublished it" : "Published it"}
-              </button>
-              <br />
-              <button type='button' onClick={() => handleDelete(post.id)}>
-                Delete
-              </button>
-            </div>
-          ))}
-      </div>
+      {loading ? (
+        <TailSpin
+          height='80'
+          width='80'
+          color='#4fa94d'
+          ariaLabel='tail-spin-loading'
+        />
+      ) : (
+        <div>
+          {posts &&
+            posts.map((post) => (
+              <div key={post.id}>
+                <p>{post.published ? "Published" : "Unpublished"}</p>
+                <h1>{post.title}</h1>
+                {editingId !== post.id ? (
+                  <p onClick={() => startEditing(post)}>{post.text}</p>
+                ) : (
+                  <input
+                    type='text'
+                    value={draft}
+                    onBlur={() => handleSave(post)}
+                    onKeyDown={(e) => handleKeydown(e, post)}
+                    onChange={(e) => setDraft(e.target.value)}
+                    autoFocus
+                  />
+                )}
+                <p>{post.user.username}</p>
+                <p>{post.timestamp}</p>
+
+                <button type='button' onClick={() => handlePublish(post.id)}>
+                  {buttonLoading ? (
+                    <TailSpin
+                      height='80'
+                      width='80'
+                      color='#4fa94d'
+                      ariaLabel='tail-spin-loading'
+                    />
+                  ) : post.published ? (
+                    "Unpublished it"
+                  ) : (
+                    "Published it"
+                  )}
+                </button>
+                <br />
+                <button type='button' onClick={() => handleDelete(post.id)}>
+                  Delete
+                </button>
+              </div>
+            ))}
+        </div>
+      )}
     </main>
   );
 }
