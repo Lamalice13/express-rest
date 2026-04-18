@@ -21,34 +21,38 @@ async function postPost(req, res) {
 
 async function patchPost(req, res) {
   try {
-    const { text } = req.query;
+    const text = req.body?.text;
     const { id } = req.params;
+    let data = {};
+    let select = {};
 
-    const currentPost = await prisma.post.findUnique({
-      where: { id: Number(id) },
-      select: { published: true },
-    });
+    if (text) {
+      data = { text };
+      select = { text: true };
+    } else {
+      const currentPost = await prisma.post.findUnique({
+        where: { id: Number(id) },
+        select: { published: true },
+      });
+      data = { published: !currentPost.published };
+      select = { published: true };
+    }
 
     const post = await prisma.post.update({
       where: {
         id: Number(id),
       },
-      data: {
-        ...(text && { text }),
-        ...(!text && { published: !currentPost.published }),
-      },
-      select: {
-        ...(!text && { published: true }),
-        ...(text && { text: true }),
-      },
+      data,
+      select,
     });
 
     return res.json(post);
   } catch (err) {
     if (err.code === "P2025") {
       // Prisma : record not found
-      return res.status(404).json({ error: "Post introuvable" });
+      return res.status(404).json({ error: "Not found" });
     }
+    console.log(err);
     return res.sendStatus(503);
   }
 }
