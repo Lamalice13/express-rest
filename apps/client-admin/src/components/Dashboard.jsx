@@ -71,6 +71,7 @@ export function Dashboard() {
       return;
     }
     if (draft !== post.text) {
+      console.log(draft);
       return handlePatchText(post);
     }
   }
@@ -120,20 +121,18 @@ export function Dashboard() {
                 <p>{post.user.username}</p>
                 <p>{post.timestamp}</p>
 
-                <button type='button' onClick={() => handlePublish(post.id)}>
-                  {buttonLoading === post.id ? (
-                    <TailSpin
-                      height='80'
-                      width='80'
-                      color='#4fa94d'
-                      ariaLabel='tail-spin-loading'
-                    />
-                  ) : post.published ? (
-                    "Unpublished it"
-                  ) : (
-                    "Published it"
-                  )}
-                </button>
+                {buttonLoading === post.id ? (
+                  <TailSpin
+                    height='40'
+                    width='40'
+                    color='#4fa94d'
+                    ariaLabel='tail-spin-loading'
+                  />
+                ) : (
+                  <button type='button' onClick={() => handlePublish(post.id)}>
+                    {post.published ? "Unpublished it" : "Published it"}
+                  </button>
+                )}
                 <br />
                 <button type='button' onClick={() => handleDelete(post.id)}>
                   Delete

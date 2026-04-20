@@ -45,8 +45,7 @@ async function patchPost(req, res) {
       data,
       select,
     });
-
-    return res.json(post);
+    !text ? res.json(post) : res.sendStatus(200);
   } catch (err) {
     if (err.code === "P2025") {
       // Prisma : record not found
@@ -122,6 +121,9 @@ async function getAllPosts(req, res) {
             },
           },
         }),
+      },
+      orderBy: {
+        timestamp: "desc",
       },
     });
 

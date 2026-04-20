@@ -17,8 +17,6 @@ export function Login() {
       const { token } = await res.json();
       localStorage.setItem("token", token);
       navigate("/dashboard");
-    } else {
-      navigate("/");
     }
   }
 
