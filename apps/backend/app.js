@@ -8,18 +8,19 @@ import { postRouter } from "./routes/postRouter.js";
 // APP
 const app = express();
 
-// PARSER
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-
 // CORS
-const allowedOrigin = process.env.ALLOWED_ORIGIN?.split(",") || [];
-console.log(allowedOrigin);
+const allowedOrigins =
+  process.env.ALLOWED_ORIGIN?.split(",").map((o) => o.trim()) || [];
+
 const corsOptions = {
-  origin: allowedOrigin,
+  origin: allowedOrigins,
   credentials: true,
 };
 app.use(cors(corsOptions));
+
+// PARSER
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
 // ROUTES
 app.use("/auth", authRouter);

@@ -69,7 +69,7 @@ export function Dashboard() {
   }
 
   return (
-    <main className='bg-yellow-400 mt-10! w-[85%] mx-auto! rounded-2xl p-10! h-screen'>
+    <main className='bg-yellow-400 mt-10! w-[85%] mx-auto! rounded-2xl p-10! h-auto'>
       <h1 className='text-3xl mb-10'>Dashboard</h1>
 
       {loading ? (
@@ -80,7 +80,7 @@ export function Dashboard() {
           ariaLabel='tail-spin-loading'
         />
       ) : (
-        <div>
+        <div className='flex flex-col gap-10'>
           {posts?.length > 0 ? (
             posts.map((post) => (
               <Post

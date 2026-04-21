@@ -1,12 +1,8 @@
-import { useState } from "react";
 import { NavLink } from "react-router";
 import { useNavigate } from "react-router";
 
 export function Nav() {
   const navigate = useNavigate();
-  const [isConnected] = useState(() => {
-    localStorage.getItem("token");
-  });
 
   function handleLogout() {
     localStorage.removeItem("token");
@@ -23,20 +19,18 @@ export function Nav() {
           <li>
             <NavLink to='/form'>Create a post</NavLink>
           </li>
-          {isConnected && (
-            <>
-              <li>
-                <NavLink to='/' end>
-                  Log in
-                </NavLink>
-              </li>
-              <li onClick={handleLogout}>
-                <button type='button' onClick={handleLogout}>
-                  Log out
-                </button>
-              </li>
-            </>
-          )}
+
+          <li>
+            <NavLink to='/' end>
+              Log in
+            </NavLink>
+          </li>
+
+          <li onClick={handleLogout}>
+            <button type='button' onClick={handleLogout}>
+              Log out
+            </button>
+          </li>
         </ul>
       </nav>
     </header>

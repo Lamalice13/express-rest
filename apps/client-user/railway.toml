@@ -1,0 +1,5 @@
+[build]
+buildCommand = "npm install && npm run build --workspace=apps/client-user"
+
+[deploy]
+startCommand = "npx serve apps/client-user/dist"

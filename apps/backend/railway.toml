@@ -1,0 +1,5 @@
+[build]
+buildCommand = "npm install && npx prisma generate --config=apps/backend/prisma.config.js"
+
+[deploy]
+startCommand = "npx prisma migrate deploy --config=apps/backend/prisma.config.js && node apps/backend/app.js"

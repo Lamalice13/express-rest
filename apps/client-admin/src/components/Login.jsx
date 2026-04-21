@@ -2,12 +2,13 @@ import { NavLink, useNavigate } from "react-router";
 
 export function Login() {
   const navigate = useNavigate();
+  const BASE_URL = `https://${import.meta.env.VITE_BACKEND_HOST}`;
 
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
 
-    const res = await fetch("http://localhost:3000/auth/login", {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

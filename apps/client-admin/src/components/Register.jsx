@@ -2,13 +2,14 @@ import { useNavigate, NavLink } from "react-router";
 
 export function Register() {
   const navigate = useNavigate();
+  const BASE_URL = `https://${import.meta.env.VITE_BACKEND_HOST}`;
 
   async function handleSubmit(e) {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target));
     console.log(formData);
 
-    const res = await fetch("http://localhost:3000/auth/register", {
+    const res = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(formData),

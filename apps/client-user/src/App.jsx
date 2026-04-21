@@ -5,18 +5,18 @@ import { Post } from "./ui/Post";
 function App() {
   const [posts, setPosts] = useState(null);
   const [loading, setLoading] = useState(false);
+  const BASE_URL = `https://${import.meta.env.VITE_BACKEND_HOST}`;
 
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
       try {
-        const res = await fetch("http://localhost:3000/posts?include=comment");
+        const res = await fetch(`${BASE_URL}/posts?include=comment`);
         if (!res.ok) {
           throw new Error(`Error: ${res.status}`);
         }
         const data = await res.json();
         setPosts(data.posts);
-        console.log(data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -30,7 +30,7 @@ function App() {
 
   return (
     <>
-      <main className='bg-yellow-400 mt-10! w-[85%] mx-auto! rounded-2xl p-10! h-screen'>
+      <main className='bg-yellow-400 mt-10! w-[85%] mx-auto! rounded-2xl p-10! h-auto'>
         <h1 className='text-3xl mb-10'>Posts</h1>
         {loading ? (
           <TailSpin
@@ -42,7 +42,9 @@ function App() {
         ) : (
           <div>
             {posts?.length > 0 &&
-              posts.map((post) => <Post post={post} setPosts={setPosts} />)}
+              posts.map((post) => (
+                <Post key={post.id} post={post} setPosts={setPosts} />
+              ))}
           </div>
         )}
       </main>
