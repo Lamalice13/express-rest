@@ -57,6 +57,7 @@ async function patchPost(req, res) {
 }
 
 async function deletePost(req, res) {
+  console.log(req.params.id);
   try {
     await prisma.post.delete({
       where: {
@@ -65,6 +66,7 @@ async function deletePost(req, res) {
     });
     return res.sendStatus(200);
   } catch (err) {
+    console.log(err);
     return res.sendStatus(503);
   }
 }

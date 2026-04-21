@@ -2,11 +2,10 @@ import { useEffect, useState } from "react";
 import { getAllPosts } from "@monorepo/shared/posts";
 import { patchPost, deletePost } from "../api/posts";
 import { TailSpin } from "react-loader-spinner";
+import { Post } from "../ui/Post";
 
 export function Dashboard() {
   const [posts, setPosts] = useState(null);
-  const [editingId, setEditingId] = useState(null);
-  const [draft, setDraft] = useState("");
   const [loading, setLoading] = useState(false);
   const [buttonLoading, setButtonLoading] = useState(null);
 
@@ -48,7 +47,7 @@ export function Dashboard() {
     }
   }
 
-  async function handlePatchText(post) {
+  async function handleSave(post, draft) {
     const res = await patchPost(post.id, {
       body: JSON.stringify({ text: draft }),
     });
@@ -61,37 +60,18 @@ export function Dashboard() {
   }
 
   async function handleDelete(id) {
-    await deletePost(id);
-    setPosts(posts.filter((post) => post.id !== id));
-  }
-
-  function handleSave(post) {
-    setEditingId(null);
-    if (!draft.trim()) {
-      return;
-    }
-    if (draft !== post.text) {
-      console.log(draft);
-      return handlePatchText(post);
-    }
-  }
-
-  function startEditing(post) {
-    setEditingId(post.id);
-    setDraft(post.text);
-  }
-
-  function handleKeydown(e, post) {
-    if (e.key === "Escape") {
-      setEditingId(null);
-    } else if (e.key === "Enter") {
-      handleSave(post);
+    try {
+      await deletePost(id);
+      setPosts(posts.filter((post) => post.id !== id));
+    } catch (err) {
+      console.error(err);
     }
   }
 
   return (
-    <main>
-      <h1>Dashboard</h1>
+    <main className='bg-yellow-400 mt-10! w-[85%] mx-auto! rounded-2xl p-10! h-screen'>
+      <h1 className='text-3xl mb-10'>Dashboard</h1>
+
       {loading ? (
         <TailSpin
           height='80'
@@ -101,44 +81,20 @@ export function Dashboard() {
         />
       ) : (
         <div>
-          {posts &&
+          {posts?.length > 0 ? (
             posts.map((post) => (
-              <div key={post.id}>
-                <p>{post.published ? "Published" : "Unpublished"}</p>
-                <h1>{post.title}</h1>
-                {editingId !== post.id ? (
-                  <p onClick={() => startEditing(post)}>{post.text}</p>
-                ) : (
-                  <input
-                    type='text'
-                    value={draft}
-                    onBlur={() => handleSave(post)}
-                    onKeyDown={(e) => handleKeydown(e, post)}
-                    onChange={(e) => setDraft(e.target.value)}
-                    autoFocus
-                  />
-                )}
-                <p>{post.user.username}</p>
-                <p>{post.timestamp}</p>
-
-                {buttonLoading === post.id ? (
-                  <TailSpin
-                    height='40'
-                    width='40'
-                    color='#4fa94d'
-                    ariaLabel='tail-spin-loading'
-                  />
-                ) : (
-                  <button type='button' onClick={() => handlePublish(post.id)}>
-                    {post.published ? "Unpublished it" : "Published it"}
-                  </button>
-                )}
-                <br />
-                <button type='button' onClick={() => handleDelete(post.id)}>
-                  Delete
-                </button>
-              </div>
-            ))}
+              <Post
+                key={post.id}
+                post={post}
+                isButtonLoading={buttonLoading === post.id}
+                onPublish={handlePublish}
+                onDelete={handleDelete}
+                onSave={handleSave}
+              />
+            ))
+          ) : (
+            <p className='text-2xl text-yellow-400'>No post available...</p>
+          )}
         </div>
       )}
     </main>
