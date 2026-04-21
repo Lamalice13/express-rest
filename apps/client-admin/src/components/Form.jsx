@@ -16,9 +16,9 @@ export function Form() {
   }
 
   return (
-    <main>
-      <h1>Create your post</h1>
-      <form onSubmit={handleSubmit}>
+    <main className='bg-yellow-400 mt-10! text-center w-1/2 mx-auto! rounded-2xl p-10!'>
+      <h1 className='text-3xl  mb-5!'>Create your post</h1>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
         <label htmlFor='title'>Title</label>
         <input required type='text' name='title' id='title' />
 

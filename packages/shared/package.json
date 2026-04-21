@@ -11,6 +11,12 @@
     },
     "./globals": {
       "default": "./src/styles/globals.js"
+    },
+    "./usePost": {
+      "default": "./src/hooks/usePost.jsx"
+    },
+    "./getFullHours": {
+      "default": "./src/utils/getFullHours.js"
     }
   },
   "scripts": {},

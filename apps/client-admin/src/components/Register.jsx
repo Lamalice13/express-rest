@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate, NavLink } from "react-router";
 
 export function Register() {
   const navigate = useNavigate();
@@ -24,9 +24,9 @@ export function Register() {
   }
 
   return (
-    <main>
-      <h1>Please, sign up</h1>
-      <form onSubmit={handleSubmit}>
+    <main className='bg-yellow-400 mt-10! text-center w-1/2 mx-auto! rounded-2xl p-10!'>
+      <h1 className='text-2xl mb-5!'>Please, sign up</h1>
+      <form onSubmit={handleSubmit} className='flex flex-col gap-2'>
         <label htmlFor='username'>Username</label>
         <input type='text' name='username' id='username' />
 
@@ -37,6 +37,9 @@ export function Register() {
         <input type='password' name='password' id='password' />
 
         <button type='submit'>Send</button>
+        <NavLink to='/' className='italic mt-5'>
+          Log in here
+        </NavLink>
       </form>
     </main>
   );

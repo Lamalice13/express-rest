@@ -21,8 +21,15 @@ export function App() {
               </ProtectedRoute>
             }
           />
+          <Route
+            path='/form'
+            element={
+              <ProtectedRoute>
+                <Form />
+              </ProtectedRoute>
+            }
+          />
         </Route>
-        <Route path='/form' element={<Form />} />
       </Routes>
     </BrowserRouter>
   );
