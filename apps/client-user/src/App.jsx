@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import { postComment } from "@monorepo/shared/posts";
 import { TailSpin } from "react-loader-spinner";
+import { Post } from "./ui/Post";
 
 function App() {
   const [posts, setPosts] = useState(null);
@@ -16,6 +16,7 @@ function App() {
         }
         const data = await res.json();
         setPosts(data.posts);
+        console.log(data);
       } catch (err) {
         console.error(err);
       } finally {
@@ -27,30 +28,10 @@ function App() {
     fetchData();
   }, []);
 
-  async function handleSubmitComment(postId, e) {
-    e.preventDefault();
-    const formData = Object.fromEntries(new FormData(e.target));
-    const res = await postComment(postId, { body: JSON.stringify(formData) });
-
-    if (res.ok) {
-      const data = await res.json();
-      setPosts((prev) =>
-        prev.map((post) => {
-          if (post.id === postId)
-            return {
-              ...post,
-              comments: [...post.comments, data.comment],
-            };
-          return post;
-        }),
-      );
-    }
-  }
-
   return (
     <>
-      <main>
-        <h1>Posts</h1>
+      <main className='bg-yellow-400 mt-10! w-[85%] mx-auto! rounded-2xl p-10! h-screen'>
+        <h1 className='text-3xl mb-10'>Posts</h1>
         {loading ? (
           <TailSpin
             height='80'
@@ -60,33 +41,8 @@ function App() {
           />
         ) : (
           <div>
-            {posts &&
-              posts.map((post) => (
-                <section key={post.id + "-"}>
-                  <div key={post.id}>
-                    <h1>{post.title}</h1>
-                    <p>{post.text}</p>
-                    <p>{post.user.username}</p>
-                    <p>{post.timestamp}</p>
-                  </div>
-                  <br />
-                  <h2 className='text-2xl'>Comments</h2>
-                  {post.comments.map((comment) => (
-                    <div key={comment.id}>
-                      <p>{comment.text}</p>
-                      <p>{comment.timestamp}</p>
-                    </div>
-                  ))}
-                  <form
-                    action='POST'
-                    onSubmit={(e) => handleSubmitComment(post.id, e)}
-                  >
-                    <label htmlFor='comment'>Let a comment here</label>
-                    <textarea name='text' id='comment'></textarea>
-                    <button type='submit'>Send</button>
-                  </form>
-                </section>
-              ))}
+            {posts?.length > 0 &&
+              posts.map((post) => <Post post={post} setPosts={setPosts} />)}
           </div>
         )}
       </main>

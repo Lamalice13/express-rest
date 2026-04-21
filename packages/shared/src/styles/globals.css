@@ -7,15 +7,25 @@
   --yellow: rgb(177, 177, 15);
 }
 
-*,
-::after,
-::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
   background-color: var(--black);
-  color: white;
+  color: var(--black);
+}
+
+input {
+  border: 1px solid var(--black);
+}
+
+input:focus {
+  outline: 2px solid black;
+}
+
+input:-webkit-autofill {
+  /* le navigateur impose son fond, force une transition invisible */
+  transition: background-color 9999s ease-in-out 0s;
+}
+
+li,
+button {
+  cursor: pointer;
 }
