@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/Lamalice13/express-rest#readme",
   "devDependencies": {
-    "concurrently": "^9.2.1"
+    "concurrently": "^10.0.3"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.2",
